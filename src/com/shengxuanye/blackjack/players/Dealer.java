@@ -5,7 +5,7 @@ import com.shengxuanye.blackjack.deck.*;
 public class Dealer extends Player{
 	
 	/*
-	 * This class implements a dealer. Note this implements "Dealer stands on all 17th" (from my own underanding). 
+	 * This class implements a dealer. Note this implements "Dealer stands on all 17th" (from my own understanding). 
 	 * 
 	 * @author Shengxuan Ye
 	 * 
@@ -30,7 +30,7 @@ public class Dealer extends Player{
 		hand.addCard(d.pop());
 		hand.addCard(d.pop());
 		
-		System.out.println(String.format(">> DEALER:\t first card = %s", hand.getFirstCardName()));	
+		System.out.println(String.format(">> DEALER(1st):\t %s", hand.getFirstCardName()));	
 	}
 	
 	/*
@@ -45,7 +45,7 @@ public class Dealer extends Player{
 			printCards(); 
 		}
 		if (hand.isBusted()) {
-			System.out.println("DEALER:\t Busted :-)"); 
+			System.out.println(">> DEALER:\t Busted :-)"); 
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class Dealer extends Player{
 		
 	public void win(int money) {
 		balance += money; 
-		System.out.println(String.format(">> DEALER:\t win = %d, total = %d", money, balance));	
+		System.out.println(String.format(">> DEALER:\t **WIN** = %d, total = %d", money, balance));	
 	}
 	
 	/*
@@ -66,7 +66,7 @@ public class Dealer extends Player{
 	
 	public void lose(int money) {
 		balance -= money; 
-		System.out.println(String.format(">> DEALER:\t lose = %d, total = %d", money, balance));	
+		System.out.println(String.format(">> DEALER:\t **LOSE** = %d, total = %d", money, balance));	
 	}
 	
 	/*

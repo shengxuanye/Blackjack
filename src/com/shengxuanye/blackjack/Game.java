@@ -30,7 +30,7 @@ public class Game {
 		dealer = new Dealer(); 
 		human = new Human(playerName, initialChips); 
 		
-		System.out.println("Hello " + human.getPlayerName() + "!"); 
+		System.out.println("hello " + human.getPlayerName() + "!"); 
 	}
 	
 	/*
@@ -53,8 +53,11 @@ public class Game {
 		dealer.startRound(deck);
 		human.startRound(deck);
 		human.executeRound(deck);
+		
+		System.out.println(); 
 		dealer.executeRound(deck);
 		
+		System.out.println(); 
 		evaluateWinner(dealer, human); 
 		
 	}
@@ -68,11 +71,13 @@ public class Game {
 		
 		Hand dealerHand = dealer.getHand(); 
 
-		System.out.println(">> FOR PRIMARY HAND"); 
+		System.out.println(">> RESULTS:\t FOR PRIMARY HAND: player: " + player.getPrimaryHand().getTotalVal() 
+				+ " vs. dealer: " + dealerHand.getTotalVal()); 
 		evaluateSingleHand(dealerHand, player.getPrimaryHand(), dealer, player); 
 		
 		if (player.isSplitted()) {
-			System.out.println(">> FOR SECONDARY HAND"); 
+			System.out.println(">> RESULTS:\t FOR SECONDARY HAND: player: " + player.getSecondaryHand().getTotalVal() 
+					+ " vs. dealer: " + dealerHand.getTotalVal()); 
 			evaluateSingleHand(dealerHand, player.getSecondaryHand(), dealer, player); 
 		}
 		
@@ -86,8 +91,8 @@ public class Game {
 		if (humanHand.isSurrendered()) { // surrender case
 			
 			System.out.println("you lose 1/2 money becuase you surrender."); 
-			player.lose(money / 2);
-			dealer.win(money / 2); 
+			player.lose(Math.round((float)money / 2));
+			dealer.win(Math.round((float)money / 2)); 
 			
 		} else {
 

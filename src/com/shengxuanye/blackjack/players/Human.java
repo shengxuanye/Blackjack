@@ -41,7 +41,7 @@ public class Human extends Player{
 	
 	public void startBet() {
 		if (balance <= 0) {
-			int blood = iu.getIntInputs("you don't have money any more. do you want to sell some blood to vampire the shadowy? (1 = yes, other # = no)");
+			int blood = iu.getIntInputs("you don't have any more money. do you want to sell some blood to vampire the shadowy? (1 = yes, other # = no)");
 			if (blood == 1) {
 				System.out.println("you sold 1 liter of blood for 100 chips."); 
 				balance = 100; 
@@ -53,7 +53,7 @@ public class Human extends Player{
 		
 		int bet;
 		do {
-			bet = iu.getIntInputs("how much do you want to bet on (you have total " + balance + ")? 0 to exit");
+			bet = iu.getIntInputs("how much do you want to bet on (you have total " + balance + ")? enter 0 to exit");
 			if (bet == 0) {
 				System.out.println("your " + balance + " chips are all eaten by a cute giraffe when you leave the table. Shengxuan will not pay you anything. "); 
 				System.exit(0); 
@@ -137,6 +137,7 @@ public class Human extends Player{
 		
 		/* action on the secondary hand. See next section for details. */
 		if (isSplitted) {
+			System.out.println(); 
 			printCards(hands[1]); 
 			isHandEnded = false; 
 			do {
@@ -198,7 +199,8 @@ public class Human extends Player{
 		
 		if (hands[handID].getBet() * 2 <= balance) {
 			hands[handID].setBet(hands[handID].getBet() * 2);
-			System.out.println(String.format(">> %s:\t DOUBLE DOWN, now bet at %d (hit then stand)", playerName, hands[handID].getBet()));
+			System.out.println(String.format(">> %s:\t DOUBLE DOWN, now bet at %d (hit then stand)", playerName, 
+					hands[handID].getBet()));
 			hit(d, handID);
 			stand(handID); 
 		} else  {
@@ -241,13 +243,13 @@ public class Human extends Player{
 	
 	public void win(int money) {
 		balance += money; 
-		System.out.println(String.format(">> %s:\t win = %d, total = %d", playerName, money, balance));	
+		System.out.println(String.format(">> %s:\t **WIN** = %d, total = %d", playerName, money, balance));	
 	}
 	
 	
 	public void lose(int money) {
 		balance -= money; 
-		System.out.println(String.format(">> %s:\t lose = %d, total = %d", playerName, money, balance));
+		System.out.println(String.format(">> %s:\t **LOSE** = %d, total = %d", playerName, money, balance));
 		
 	}
 	
