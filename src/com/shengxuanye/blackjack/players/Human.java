@@ -1,18 +1,25 @@
 package com.shengxuanye.blackjack.players;
 
-import com.shengxuanye.blackjack.deck.Deck;
-import com.shengxuanye.blackjack.deck.Hand;
+import com.shengxuanye.blackjack.deck.*;
 import com.shengxuanye.blackjack.utility.InputUtil;
 
 public class Human extends Player{
 	
+	/*
+	 * This class implements a human player. It extends the Player class. The following actions are 
+	 * implemented: hit, stand, double down, and surrender. The "insurance" is not implemented since it 
+	 * is not commonly understood. 
+	 * 
+	 * @author Shengxuan Ye
+	 */
+	
 	private final String OPTIONS_STR = "1 = hit, 2 = stand, 3 = double down, 4 = surrender"; 
 	
-	private String playerName; 
-	private Hand[] hands; 	// for "split", hands[0] is primary hand, hands[1] is split hand
+	private String playerName; 		// name of the player
+	private Hand[] hands; 			// two hands hands[0] is the primary hand, hands[1] is the splitted hand
 	
-	private boolean isSplitted; 
-	private boolean isHandEnded; 
+	private boolean isSplitted; 	// set true if a hand is splitted in the round.
+	private boolean isHandEnded; 	// set true if a hand is ended. 
 	
 	private InputUtil iu; 
 	
@@ -26,6 +33,11 @@ public class Human extends Player{
 		
 		iu = new InputUtil(); 
 	}
+	
+	/*
+	 * This method implements the betting procedures. Basically, it checks for the amount of money and obtain
+	 * how much the player want to bet on the first hand. 
+	 */
 	
 	public void startBet() {
 		if (balance <= 0) {
@@ -57,6 +69,11 @@ public class Human extends Player{
 		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.shengxuanye.blackjack.players.Player#startRound(com.shengxuanye.blackjack.deck.Deck)
+	 */
+	
 	public void startRound(Deck d) {
 		
 		hands[0].addCard(d.pop());
@@ -69,9 +86,20 @@ public class Human extends Player{
 		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.shengxuanye.blackjack.players.Player#executeRound(com.shengxuanye.blackjack.deck.Deck)
+	 */
+	
+	/*
+	 * The method implements how a round is executed. First it see if the hand can split (for 2 cards have
+	 * same value). It asks the user whether to split the card. After that, it asks users to take actions
+	 * individually. 
+	 */
+	
 	public void executeRound(Deck d) {
 		
-		// split
+		/* split the card, if possible */
 		if (hands[0].canSplit()) {
 			
 			int wantSplit = iu.getIntInputs("do you want to split? 1 = yes, other # = no");
@@ -92,11 +120,12 @@ public class Human extends Player{
 			
 		}
 		
-		// primary hand
+		
 		boolean succ = false; 
 		isHandEnded = false; 
 		
-		if (isSplitted)
+		/* action on the primary hand. See next section for details. */
+		if (isSplitted)	 // to show the user again the current cards in hand after splitting. 
 			printCards(hands[0]); 
 		
 		do {
@@ -105,7 +134,8 @@ public class Human extends Player{
 				succ = doOption(option, d, 0); 
 		} while (!succ && !isHandEnded); 
 		
-		// secondary hand 
+		
+		/* action on the secondary hand. See next section for details. */
 		if (isSplitted) {
 			printCards(hands[1]); 
 			isHandEnded = false; 
@@ -118,6 +148,10 @@ public class Human extends Player{
 		
 	}
 	
+	/*
+	 * The following section deals with different actions. doOption is a switcher for different options. 
+	 * Then hit(), stand(), doubleDown() and surrender() implements different actions. 
+	 */
 	
 	private boolean doOption(int option, Deck d, int handID) {
 		switch (option) {
@@ -142,20 +176,21 @@ public class Human extends Player{
 	
 
 	public void hit(Deck d, int handID) {
-		System.out.println(String.format("%s:\t HIT", playerName));
+		System.out.println(String.format(">> %s:\t HIT", playerName));
 		
 		hands[handID].addCard(d.pop());
 		printCards(hands[handID]); 
 		
 		if (hands[handID].isBusted()) {
-			System.out.println(String.format("%s:\t BUSTED :-(", playerName));
+			System.out.println(String.format(">> %s:\t BUSTED :-(", playerName));
 			isHandEnded = true; 
 		}
 	}
 	
+	
 	public void stand(int handID) {
 		isHandEnded = true; 
-		System.out.println(String.format("%s:\t STAND", playerName));
+		System.out.println(String.format(">> %s:\t STAND", playerName));
 	}
 
 	
@@ -163,7 +198,7 @@ public class Human extends Player{
 		
 		if (hands[handID].getBet() * 2 <= balance) {
 			hands[handID].setBet(hands[handID].getBet() * 2);
-			System.out.println(String.format("%s:\t DOUBLE DOWN, now bet at %d (hit then stand)", playerName, hands[handID].getBet()));
+			System.out.println(String.format(">> %s:\t DOUBLE DOWN, now bet at %d (hit then stand)", playerName, hands[handID].getBet()));
 			hit(d, handID);
 			stand(handID); 
 		} else  {
@@ -172,16 +207,17 @@ public class Human extends Player{
 		
 	}
 	
+	
 	public void surrender(int handID) {
 		hands[handID].setSurrendered(true); 
 		isHandEnded = true; 
-		System.out.println(String.format("%s:\t SURRENDER", playerName));
+		System.out.println(String.format(">> %s:\t SURRENDER", playerName));
 	}
-
-	private void printCards(Hand h) {
-		System.out.print(">> " + playerName + ":\t ");	
-		h.printCards();
-	}
+	
+	
+	/*
+	 * Getters and setters
+	 */
 	
 	public boolean isSplitted() {
 		return isSplitted; 
@@ -199,6 +235,9 @@ public class Human extends Player{
 		return playerName; 
 	}
 	
+	/*
+	 * Functions to set balance for winning and losing. 
+	 */
 	
 	public void win(int money) {
 		balance += money; 
@@ -212,4 +251,13 @@ public class Human extends Player{
 		
 	}
 	
+	/*
+	 * A help function to print cards
+	 */
+
+	private void printCards(Hand h) {
+		System.out.print(">> " + playerName + ":\t ");	
+		h.printCards();
+	}
+
 }

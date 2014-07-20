@@ -2,11 +2,22 @@ package com.shengxuanye.blackjack.deck;
 
 public class Card {
 	
+	/*
+	 * The class implements a card (one of the 52 cards), with some useful methods for the blackjack game. 
+	 * 
+	 * @author Shengxuan Ye
+	 */
+	
+	/*
+	 * Define suit, rank, and value in a list. Note that A can be either 1 or 11. See useAceAs1() and 
+	 * useAceAs11().
+	 */
+	
 	private final String[] SUIT_NAME = {"Clubs_", "Diamonds", "Hearts", "Spades"};
 	private final String[] RANK_NAME = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}; 
 	private int[] CARD_VALUE =         { 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   10,  10,  10}; 
 	
-	private int cardID;
+	private int cardID;		// each card has an ID from 1-52. 
 	
 	public Card() {
 		super();
@@ -18,6 +29,10 @@ public class Card {
 		this.cardID = cardID;
 	}
 
+	/*
+	 * Getters and setters. 
+	 */
+	
 	public int getID() {
 		return cardID;
 	}
@@ -39,6 +54,11 @@ public class Card {
 		else 
 			return CARD_VALUE[cardID % 13];
 	}
+	
+	/*
+	 * Some utility function dealing with Ace. useAceAs1() defines the card value to 1, and useAceAs11() defines
+	 * the card value to 11. 
+	 */
 	
 	public boolean isAce() {
 		return cardID % 13 == 0; 

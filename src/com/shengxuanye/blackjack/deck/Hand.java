@@ -6,25 +6,43 @@ import java.util.HashSet;
 import java.util.Stack;
 
 public class Hand implements Comparable<Hand> {
+
+	/*
+	 * This class implements a hand for the blackjack game. Specifically, a player can add or move a card, 
+	 * to see all cards, and to calculate all possible values of the card. Some other utilities are also 
+	 * included. 
+	 * 
+	 * @author Shengxuan Ye
+	 * 
+	 */
 	
 	private ArrayList<Card> hand;
-	private int bet; 	// each hand has a bet
-	private boolean isEnded; 	// mark end of the hand
-	private boolean isSurrendered; 		// mark if this hand is surrendered or not
+	private int bet; 				// each hand has a bet
+	private boolean isEnded; 		// mark end of the hand
+	private boolean isSurrendered; 	// mark if this hand is surrendered or not
 
+	
 	public Hand(int bet) {
 		super();
 		hand = new ArrayList<Card>(); 
 		this.bet = bet; 
 	}
 	
+	
+	/*
+	 * These methods manipulates the cards in the hand. (add, remove, print, peek all cards, peek first 
+	 * card, and check if the two cards are the same).   
+	 */
+	
 	public void addCard(Card c) {
 		hand.add(c); 
 	}
 	
+	
 	public void removeCard(int i) {
 		hand.remove(i); 
 	}
+	
 	
 	public void printCards() {
 		for (Card c : hand)
@@ -44,7 +62,20 @@ public class Hand implements Comparable<Hand> {
 			return "no_card"; 
 	}
 	
-	public ArrayList<Integer> getTotalVal() { // this will return a SORTED array of all possible unique values, given ace on hand
+	public boolean canSplit() {
+		if (hand.get(0).getValue() == hand.get(1).getValue()) {
+			return true;
+		}
+		return false; 
+	}
+	
+	/*
+	 * These methods are value related. getTotalVal() will return a SORTED array of all possible unique 
+	 * values, given ace on hand. isBusted() checks if the hand is busted; is21() checks if the hand hits
+	 * 21; and getLargestNumLessThan21() gets the largested value <= 21 for winner comparison. 
+	 */
+	
+	public ArrayList<Integer> getTotalVal() { 
 		
 		Stack<Integer> s = new Stack<Integer>(); 
 		s.push(0); 
@@ -110,12 +141,11 @@ public class Hand implements Comparable<Hand> {
 		return -1; 
 	}
 	
-	public boolean canSplit() {
-		if (hand.get(0).getValue() == hand.get(1).getValue()) {
-			return true;
-		}
-		return false; 
-	}
+	
+	/*
+	 * These are getters and setters
+	 */
+
 	
 	public int getBet() {
 		return bet;
@@ -140,6 +170,11 @@ public class Hand implements Comparable<Hand> {
 	public void setSurrendered(boolean isSurrendered) {
 		this.isSurrendered = isSurrendered;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 
 
 	@Override

@@ -1,32 +1,48 @@
 package com.shengxuanye.blackjack;
 
-import com.shengxuanye.blackjack.deck.Deck;
-import com.shengxuanye.blackjack.deck.Hand;
+import com.shengxuanye.blackjack.deck.*;
 import com.shengxuanye.blackjack.players.*;
 
 public class Game {
 	
-	int DECK_THOLD = 30; 
+	/*
+	 * This class implements a blackjack game, with one player and one dealer. There *might* be small 
+	 * variations to specific rules, but I follows the page (http://www.blackjackinfo.com/blackjack-rules.php)
+	 * 
+	 * @ author Shengxuan Ye
+	 */
 	
-	Deck deck; 
-	Dealer dealer; 
-	Human human; 
+	private final int DECK_THOLD = 30;  	// The deck decreases the size as the game goes on. This parameter
+											// sets the minimum threshold for the deck to reinitialize. 
+	
+	private int initialChips = 100; 		// The initial chips. 
+	private String playerName = "PLAYER"; 	// The name of the player. 
+	
+	private Deck deck; 	
+	private Dealer dealer; 	
+	private Human human; 
+	
 	
 	public Game() {
 		deck = new Deck(); 
 		deck.shuffle();
 		
 		dealer = new Dealer(); 
-		human = new Human("PLAYER", 100); 
+		human = new Human(playerName, initialChips); 
 		
 		System.out.println("Hello " + human.getPlayerName() + "!"); 
 	}
 	
+	/*
+	 * This method implements a "round" in the game. Basically, it checks whether the deck needs reinitialize, 
+	 * then do the following: player bet, dealer get 2 cards and show one card, player get 2 cards, player
+	 * decide the actions, and finally dealer get cards until hitting 17. Finally, the winners are revealed
+	 * by calling evaluteWinner(). 
+	 */
 	
 	public void doRound() {
 		
-		System.out.println(); 
-		System.out.println(); 
+		System.out.println("\n"); 
 		
 		if (deck.size() < DECK_THOLD) {
 			deck.reinitialize();
@@ -43,22 +59,27 @@ public class Game {
 		
 	}
 	
+	/*
+	 * The following two methods evaluates the winner. Specifically, evaluateWinner checks all hands, and
+	 * evaluateSinleHand checks for one hand (so call 2 times when splitted). 
+	 */
 	
 	private void evaluateWinner(Dealer dealer, Human player) {
 		
 		Hand dealerHand = dealer.getHand(); 
 
 		System.out.println(">> FOR PRIMARY HAND"); 
-		evlauateSingleHand(dealerHand, player.getPrimaryHand(), dealer, player); 
+		evaluateSingleHand(dealerHand, player.getPrimaryHand(), dealer, player); 
 		
 		if (player.isSplitted()) {
 			System.out.println(">> FOR SECONDARY HAND"); 
-			evlauateSingleHand(dealerHand, player.getSecondaryHand(), dealer, player); 
+			evaluateSingleHand(dealerHand, player.getSecondaryHand(), dealer, player); 
 		}
 		
 	}
 	
-	private void evlauateSingleHand(Hand dealerHand, Hand humanHand, Dealer dealer, Human player) {
+	
+	private void evaluateSingleHand(Hand dealerHand, Hand humanHand, Dealer dealer, Human player) {
 
 		int money = humanHand.getBet(); 
 
@@ -85,10 +106,6 @@ public class Game {
 			}
 			
 		}
-	}
-	
-	public Deck getDeck() {
-		return deck; 
 	}
 	
 }
