@@ -2,7 +2,7 @@ package com.shengxuanye.blackjack.deck;
 
 public class Card {
 	
-	private final String[] SUIT_NAME = {"Clubs", "Diamonds", "Hearts", "Spades"};
+	private final String[] SUIT_NAME = {"Clubs_", "Diamonds", "Hearts", "Spades"};
 	private final String[] RANK_NAME = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}; 
 	private int[] CARD_VALUE =         { 1,   2,   3,   4,   5,   6,   7,   8,   9,   10,   10,  10,  10}; 
 	

@@ -61,19 +61,29 @@ public class Game {
 	private void evlauateSingleHand(Hand dealerHand, Hand humanHand, Dealer dealer, Human player) {
 
 		int money = humanHand.getBet(); 
-		
-		if (humanHand.compareTo(dealerHand) == 1) {
-			if (humanHand.is21()) {
-				System.out.println("your money doubled because you hit 21."); 
-				money *= 2; 
-			}
-			player.win(money);
-			dealer.lose(money); 
-		} else if (humanHand.compareTo(dealerHand) == -1) {
-			player.lose(money);
-			dealer.win(money); 
+
+		if (humanHand.isSurrendered()) { // surrender case
+			
+			System.out.println("you lose 1/2 money becuase you surrender."); 
+			player.lose(money / 2);
+			dealer.win(money / 2); 
+			
 		} else {
-			System.out.println("Dealer and your hand have same value. "); 
+
+			if (humanHand.compareTo(dealerHand) == 1) { // player winning case
+				if (humanHand.is21()) {
+					System.out.println("your money doubled because you hit 21."); 
+					money *= 2; 
+				}
+				player.win(money);
+				dealer.lose(money); 
+			} else if (humanHand.compareTo(dealerHand) == -1) { // player losing case
+				player.lose(money);
+				dealer.win(money); 
+			} else { // no winner case
+				System.out.println("Dealer and your hand have same value. "); 
+			}
+			
 		}
 	}
 	

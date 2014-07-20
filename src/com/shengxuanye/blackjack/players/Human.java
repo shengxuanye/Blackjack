@@ -6,6 +6,8 @@ import com.shengxuanye.blackjack.utility.InputUtil;
 
 public class Human extends Player{
 	
+	private final String OPTIONS_STR = "1 = hit, 2 = stand, 3 = double down, 4 = surrender"; 
+	
 	private String playerName; 
 	private Hand[] hands; 	// for "split", hands[0] is primary hand, hands[1] is split hand
 	
@@ -93,10 +95,12 @@ public class Human extends Player{
 		// primary hand
 		boolean succ = false; 
 		isHandEnded = false; 
-		printCards(hands[0]); 
+		
+		if (isSplitted)
+			printCards(hands[0]); 
 		
 		do {
-			int option = iu.getIntInputs("what is your action for your primary hand? 1 = hit, 2 = stand, 3 = double down");
+			int option = iu.getIntInputs("what is your action for your primary hand? "  + OPTIONS_STR);
 			if (option != -1)
 				succ = doOption(option, d, 0); 
 		} while (!succ && !isHandEnded); 
@@ -106,7 +110,7 @@ public class Human extends Player{
 			printCards(hands[1]); 
 			isHandEnded = false; 
 			do {
-				int option = iu.getIntInputs("what is your action for your secondary hand? 1 = hit, 2 = stand, 3 = double down");
+				int option = iu.getIntInputs("what is your action for your secondary hand? " + OPTIONS_STR);
 				if (option != -1)
 					succ = doOption(option, d, 1); 
 			} while (!succ && !isHandEnded); 
@@ -125,6 +129,9 @@ public class Human extends Player{
 				break; 
 			case 3:
 				doubleDown(d, handID); 
+				break; 
+			case 4: 
+				surrender(handID);
 				break; 
 			default: 
 				System.out.println("incorrect option. try again."); 
@@ -164,12 +171,12 @@ public class Human extends Player{
 		}
 		
 	}
-//	
-//	public void surrender(int handID) {
-//		isSurrendered[handID] = true; 
-//		isEnd[handID] = true; 
-//		System.out.println(String.format("%s:\t SURRENDER", playerName));
-//	}
+	
+	public void surrender(int handID) {
+		hands[handID].setSurrendered(true); 
+		isHandEnded = true; 
+		System.out.println(String.format("%s:\t SURRENDER", playerName));
+	}
 
 	private void printCards(Hand h) {
 		System.out.print(">> " + playerName + ":\t ");	
